@@ -41,7 +41,6 @@ Based on Archlinux's [simple firewall](https://wiki.archlinux.org/index.php/Simp
 iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
 iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A INPUT -i lo -j ACCEPT
-iptables -A INPUT -o lo -j ACCEPT
 ```
 
 Accept port 6944 for a server
@@ -57,6 +56,7 @@ Accept outgoing DNS:
 ```
 iptables -A OUTPUT -p tcp -m tcp --dport 53 -j ACCEPT
 iptables -A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
 ```
 
 ## Squid config
