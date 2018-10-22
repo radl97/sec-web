@@ -4,10 +4,6 @@ Note for myself to how to get internet access and some other things in Arch Linu
 
 Squid+iptables solution for HTTPS-only outgoing connections.
 
-Sajat konfigok a netelereshez.
-
-Squid+iptables beallitasok ahhoz, hogy csak HTTPS-only kapcsolatokat engedjen ki meg vissza SSH-t.
-
 ### Create unconstrained Internet access for a group
 
 Create a group allowing unconstrained access with a user of the same name.
@@ -44,7 +40,8 @@ Based on Archlinux's [simple firewall](https://wiki.archlinux.org/index.php/Simp
 ```
 iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
 iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A INPUT -i lo -j ACCEPT
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -o lo -j ACCEPT
 ```
 
 Accept port 6944 for a server
@@ -127,4 +124,9 @@ Of course there are sites not supporting TLS 1.2, 1.1, more with 1.0 or not even
 
 ## TODO
 
-Filter packets by HTTPS version and cipher suite.
+Filter packets by SSL version and cipher suite.
+Install Ublock origin?
+DNSSec
+HTTPS everywhere
+VPN, IPSec?
+What to install for these to work
