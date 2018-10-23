@@ -92,18 +92,41 @@ Deny all other access to this proxy:
 
 And default options...
 
+Somewhy needs restart on connecting to something every time:
+`systemctl restart squid`
+
 ## WPA Supplicant usage
 
-Enable `wfa_cli`:
+Enable `wpa_cli`:
 `echo update_config=1 > /etc/wpa_supplicant/wpa_supplicant.conf`
 
 Start `wpa_supplicant`:
-`wpa_supplicant -B -i wlp2s0 -c /etc/wpa_supplicant/wpa_supplicant.conf`
+`sudo wpa_supplicant -B -i wlp2s0 -c /etc/wpa_supplicant/wpa_supplicant.conf`
 
-Start `wfa_cli`:
-`wfa_cli -i wlp2s0`
+Start `wpa_cli`:
+`sudo wpa_cli -i wlp2s0`
 
 Don't forget these options as they sometimes do not communicate the errors well. (e.g. fail to connect, no root access)
+
+
+### Enabling the service
+
+`wpa_supplicant -B -i wlp2s0 -c /etc/wpa_supplicant/wpa_supplicant.conf`
+
+Open `/usr/lib/systemd/system/wpa_supplicant.service`, and modify the service's execStart to:
+`execStart=/usr/bin/wpa_supplicant -u -i wlp2s0 -c /etc/wpa_supplicant/wpa_supplicant.conf`
+
+And run `systemctl enable wpa_supplicant`
+
+You might need to run `systemctl reload-daemon`, if it says so.
+
+### Upon connecting, if DHCP is not enabled, you might want to start dhcpcd:
+
+`sudo dhcpcd wlp2s0` where `wlp2s0` is the device name.
+
+You can also enable it with systemctl:
+
+`systemctl enable dhcpcd`
 
 ## Firefox
 
@@ -124,9 +147,10 @@ Of course there are sites not supporting TLS 1.2, 1.1, more with 1.0 or not even
 
 ## TODO
 
-Filter packets by SSL version and cipher suite.
-Install Ublock origin?
-DNSSec
-HTTPS everywhere
-VPN, IPSec?
-What to install for these to work
+- Filter packets by SSL version and cipher suite.
+- Adblock might sell your data [citation needed](), install Ublock origin?
+- DNSSec
+- Redirect HTTP connections to HTTPS by Squid?
+- Enable/configure VPN, IPSec?
+- What to install for these to work
+- Daemonize
