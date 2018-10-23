@@ -95,6 +95,8 @@ And default options...
 Somewhy needs restart on connecting to something every time:
 `systemctl restart squid`
 
+Add `export HTTPS_PROXY=localhost:3128` to .bashrc or your favourite shell
+
 ## WPA Supplicant usage
 
 Enable `wpa_cli`:
