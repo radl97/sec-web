@@ -139,6 +139,35 @@ At `about:config`:
 Set `security.tls.version.min` higher.
 Search for `ssl3` (or `security.ssl3', not really related to ssl3). Opted out some cipher modes.
 
+### Install sound
+
+`sudo pacman -Syu alsa-utils pulseaudio pulseaudio-alsa`
+
+You must start pulseaudio on startup:
+
+You can use `alsamixer` to control sound.
+
+Based on some site I added a new file `/etc/dbus-1/system.d/pulseaudio.conf`
+with the following content:
+```
+<!DOCTYPE busconfig PUBLIC
+ "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+<busconfig>
+        <policy user="pulse">
+            <allow own="org.pulseaudio.Server"/>
+            <allow send_destination="org.pulseaudio.Server"/>
+            <allow receive_sender="org.pulseaudio.Server"/>
+        </policy>
+</busconfig>
+```
+
+After that running pulseaudio works perfectly.
+
+## Install clipman
+
+For middle-button pasting, install `xfce4-clipman`
+
 ## Bugs
 
 There are some cases they do not work.
@@ -154,3 +183,6 @@ Of course there are sites not supporting TLS 1.2, 1.1, more with 1.0 or not even
 - Enable/configure VPN, IPSec?
 - What to install for these to work
 - Daemonize
+- Enable sound control buttons on the laptop.
+- Automatically start pulseaudio on startup.
+- Fix clipboard...
