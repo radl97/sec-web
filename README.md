@@ -25,6 +25,8 @@ Log in from a sudoer user: `sudo su wireshark -c wireshark-gtk`
 
 Does not need any iptables config.
 
+On first startup, it will need `xhost +local:`, enabling local applications from other users to use X. (Which might reduce security)
+
 ## Iptables configurations
 
 Default behaviour:
