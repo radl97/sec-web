@@ -59,6 +59,11 @@ iptables -A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
 iptables -A OUTPUT -o lo -j ACCEPT
 ```
 
+And do not forget to save the config (and copy the behaviour for IPv6)
+`iptables-save > /etc/iptables/iptables.rules`
+`cp /etc/iptables/iptables.rules /etc/iptables/ip6tables.rules`
+`ip6tables-restore /etc/iptables/ip6tables.rules`
+
 ## Squid config
 
 Based on basic Squid default config from Archlinux's setup.
@@ -175,6 +180,30 @@ For middle-button pasting, install `xfce4-clipman`
 There are some cases they do not work.
 Restarting iptables while squid is alive locks out squid's open connections(?)
 Of course there are sites not supporting TLS 1.2, 1.1, more with 1.0 or not even HTTPS. That's why I created `netuser`.
+
+## Connecting to BME Eduroam
+
+`sudo mkdir -p /etc/wpa_supplicant/ca`
+Copy `eduroam-ca-cert.pem` to `/etc/wpa_supplicant/ca/eduroam-ca-cert.pem`.
+
+Add this to `/etc/wpa_supplicant/wpa_supplicant.conf`:
+```
+network={
+	ssid="eduroam"
+	scan_ssid=1
+	key_mgmt=WPA-EAP
+	eap=TTLS
+	identity="aa0000@hszk.bme.hu"
+	anonymous_identity="@bme.hu"
+	password="<password>"
+	ca_cert="/etc/wpa_supplicant/ca/eduroam-ca-cert.pem"
+	phase2="auth=PAP"
+}
+```
+
+Note the `"auth=PAP"` part, what contradicts all the websites which say `"auth=MSCHAPV2"` is good. EAP authentication would fail this way.
+
+You can also configure it through `wpa_cli`.
 
 ## TODO
 
