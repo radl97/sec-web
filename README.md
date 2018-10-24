@@ -209,6 +209,7 @@ You can also configure it through `wpa_cli`.
 
 - Filter packets by SSL version and cipher suite.
 - Adblock might sell your data [citation needed](), install Ublock origin?
+- Squid SOCKSv5?
 - DNSSec
 - Redirect HTTP connections to HTTPS by Squid?
 - Enable/configure VPN, IPSec?
