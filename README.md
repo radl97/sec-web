@@ -207,6 +207,10 @@ Note the `"auth=PAP"` part, what contradicts all the websites which say `"auth=M
 
 You can also configure it through `wpa_cli`.
 
+## Start PulseAudio on startup
+
+`xfce4-session-settings`, application autostart and tick PulseAudio
+
 ## TODO
 
 - Filter packets by SSL version and cipher suite.
@@ -218,5 +222,4 @@ You can also configure it through `wpa_cli`.
 - What to install for these to work
 - Daemonize
 - Enable sound control buttons on the laptop.
-- Automatically start pulseaudio on startup.
 - Fix clipboard...
