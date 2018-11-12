@@ -2,7 +2,7 @@
 
 Note for myself to how to get internet access and some other things in Arch Linux without bigger manager programs.
 
-Squid+iptables solution for HTTPS-only outgoing connections.
+~Squid~ tinyproxy+iptables solution for HTTPS-only outgoing connections.
 
 ### Create unconstrained Internet access for a group
 
@@ -210,6 +210,20 @@ You can also configure it through `wpa_cli`.
 ## Start PulseAudio on startup
 
 `xfce4-session-settings`, application autostart and tick PulseAudio
+
+## Squid too slow
+
+`pacman -Syu tinyproxy`
+
+Squid tries to cache, but its useless on HTTPS... It's gotten very slow with time (shutdown time).
+
+So I've removed squid and installed tinyproxy instead:
+You have to rewrite the rule about 
+`iptables -I OUTPUT 1 -p tcp -m tcp --dport 443 -m owner --gid-owner 186 -j ACCEPT`
+and remove the squid's rule.
+
+You have to allow tinyproxy PID to run as a systemctl service.
+Of course, `systemctl enable tinyproxy` is needed.
 
 ## TODO
 
