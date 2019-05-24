@@ -1,0 +1,8 @@
+[Xfce Panel]
+Type=X-XFCE-PanelPlugin
+Name=LzSignals
+Comment=Some signals
+Icon=xfce-schedule
+X-XFCE-Module=lzsignal
+X-XFCE-Internal=FALSE
+X-XFCE-API=2.0

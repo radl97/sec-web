@@ -1,0 +1,45 @@
+#!/bin/bash
+
+### A simple utility tool fetching all information to know about current wifi and ethernet connection
+
+# wpa_cli: logoff / logon thing: i always forget
+
+# TODO: wifi signal and noise
+
+# wpa_supplicant running
+if ps xa | grep 'wpa[_]supplicant' >/dev/null;
+then
+  # get SSID
+  /usr/bin/wpa_cli -i wlp2s0 status | grep '^ssid' | cut -d '=' -f 2-
+  echo -n 'W '
+  # scanning is on
+  if [ x$(wpa_cli -i wlp2s0 get ap_scan) == x1 ];
+  then
+    echo -n 'SC '
+  fi
+  # dhcp client running
+  if [ "x$(ps -p $(cat /run/dhcpcd-wlp2s0*) | wc -l)" != x1 ]
+  then
+    echo -n 'C '
+  fi
+  # show if wifi has IP
+  ip a show dev wlp2s0 | grep 'inet' | grep -v 'scope link' | sed -n 's/^.*inet[^ ]* \([^\/]*\).*$/\1/p'
+fi
+
+# ethernet interface running
+if ip l show dev enp3s0 | grep 'state UP'>/dev/null;
+then
+  echo -n 'E '
+  # dhcp client running
+  if [ "x$(ps -p $(cat /run/dhcpcd-enp3s0*) | wc -l)" != x1 ]
+  then
+    echo -n 'C '
+  fi
+  # dhcp server running
+  if [ "x$(ps -p $(cat /run/dhcpd*) | wc -l)" != x1 ]
+  then
+    echo -n 'S '
+  fi
+  # show if eth has IP
+  ip a show dev enp3s0 | grep 'inet' | grep -v 'scope link' | sed -n 's/^.*inet[^ ]* \([^\/]*\).*$/\1/p'
+fi

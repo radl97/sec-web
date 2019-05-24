@@ -61,6 +61,21 @@ iptables -A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
 iptables -A OUTPUT -o lo -j ACCEPT
 ```
 
+iptables now:
+```
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -p tcp -m conntrack --ctstate NEW -m tcp --dport 22 -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 443 -m owner --gid-owner 186 -j ACCEPT
+-A OUTPUT -m owner --gid-owner 1002 -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 53 -j ACCEPT
+-A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+-A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+```
+
 And do not forget to save the config (and copy the behaviour for IPv6)
 `iptables-save > /etc/iptables/iptables.rules`
 `cp /etc/iptables/iptables.rules /etc/iptables/ip6tables.rules`
@@ -227,13 +242,23 @@ Of course, `systemctl enable tinyproxy` is needed.
 
 ## TODO
 
+- Enable logging
 - Filter packets by SSL version and cipher suite.
 - Adblock might sell your data [citation needed](), install Ublock origin?
 - Squid SOCKSv5?
 - DNSSec
-- Redirect HTTP connections to HTTPS by Squid?
+- Redirect HTTP connections to HTTPS with the proxy?
 - Enable/configure VPN, IPSec?
 - What to install for these to work
 - Daemonize
 - Enable sound control buttons on the laptop.
 - Fix clipboard...
+
+## Internet status board
+
+I use XFCE4 and hacked the `xfce4-datetime-plugin`.
+
+I've created two scripts: `wifistart` to start `wpa_supplicant`, the other: `wifistat`.
+This collects data from network: WiFi SSID, scan on/off, eth/wifi running DHCP instances (server or client), IP addresses, and prints it in a very compact format.
+
+Added the specific commands to sudoers so it can be used by anyone to poll net data or start wifi.
