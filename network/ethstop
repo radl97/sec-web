@@ -1,0 +1,2 @@
+#!/bin/bash
+dhcpcd -4k enp3s0

@@ -1,0 +1,6 @@
+# Add this to /etc/sudoers (or to a new file in the include directory)
+ALL ALL=(ALL) NOPASSWD: /usr/local/bin/wifistat
+ALL ALL=(ALL) NOPASSWD: /usr/local/bin/wifistart
+ALL ALL=(ALL) NOPASSWD: /usr/local/bin/wifistop
+ALL ALL=(ALL) NOPASSWD: /usr/local/bin/ethstart
+ALL ALL=(ALL) NOPASSWD: /usr/local/bin/ethstop

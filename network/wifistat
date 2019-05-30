@@ -18,9 +18,13 @@ then
     echo -n 'SC '
   fi
   # dhcp client running
-  if [ "x$(ps -p $(cat /run/dhcpcd-wlp2s0*) | wc -l)" != x1 ]
+  # Error if nothing matches the pattern -> no dhcpcd lock file
+  if ls /run/dhcpcd-wlp2s0* >/dev/null;
   then
-    echo -n 'C '
+    if [ "x$(ps -p $(cat /run/dhcpcd-wlp2s0*) | wc -l)" != x1 ]
+    then
+      echo -n 'C '
+    fi
   fi
   # show if wifi has IP
   ip a show dev wlp2s0 | grep 'inet' | grep -v 'scope link' | sed -n 's/^.*inet[^ ]* \([^\/]*\).*$/\1/p'
@@ -31,14 +35,20 @@ if ip l show dev enp3s0 | grep 'state UP'>/dev/null;
 then
   echo -n 'E '
   # dhcp client running
-  if [ "x$(ps -p $(cat /run/dhcpcd-enp3s0*) | wc -l)" != x1 ]
+  if ls /run/dhcpcd-enp3s0* >/dev/null;
   then
-    echo -n 'C '
+    if [ "x$(ps -p $(cat /run/dhcpcd-enp3s0*) | wc -l)" != x1 ]
+    then
+      echo -n 'C '
+    fi
   fi
   # dhcp server running
-  if [ "x$(ps -p $(cat /run/dhcpd*) | wc -l)" != x1 ]
+  if ls /run/dhcpd* >/dev/null;
   then
-    echo -n 'S '
+    if [ "x$(ps -p $(cat /run/dhcpd*) | wc -l)" != x1 ]
+    then
+      echo -n 'S '
+    fi
   fi
   # show if eth has IP
   ip a show dev enp3s0 | grep 'inet' | grep -v 'scope link' | sed -n 's/^.*inet[^ ]* \([^\/]*\).*$/\1/p'
