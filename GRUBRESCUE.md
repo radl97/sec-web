@@ -110,3 +110,8 @@ After mounting some other partition, one could install grub to an other partitio
 
 After that, restarting with Ctrl+Alt+Delete fixed every problem I had. Maybe I should delete the UEFI option of the old, overwritten system...
 
+---
+
+**Note:** A not so successful ubuntu installation tried to install i386-pc version of GRUB in the MBR (so very far away from UEFI with `x86_64`...). Fixed it with an additional option: `--target x86_64-efi`.
+It needed an additional package installed with `apt install grub-efi-amd64-signed`.
+
